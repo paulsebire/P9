@@ -1,6 +1,7 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -40,7 +41,7 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void isEquilibree() {
+    public void isEquilibreeRG2() {
         EcritureComptable vEcriture;
         vEcriture = new EcritureComptable();
 
@@ -52,7 +53,7 @@ public class EcritureComptableTest {
         Assert.assertTrue(vEcriture.toString(), vEcriture.isEquilibree());
     }
     @Test
-    public void isNotEquilibree() {
+    public void isNotEquilibreeRG2() {
         EcritureComptable vEcriture;
         vEcriture = new EcritureComptable();
         vEcriture.getListLigneEcriture().clear();
@@ -65,7 +66,34 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void checkMontantLigneEcritureSignes(){
+    public void checkGetTotalDebit_isEqualTo_SumOfDebits() {
+        vEcritureComptable = new EcritureComptable();
+
+        vEcritureComptable.setLibelle("test gettotalDebit");
+        vEcritureComptable.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
+        vEcritureComptable.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
+        vEcritureComptable.getListLigneEcriture().add(this.createLigne(2, null, "301"));
+        vEcritureComptable.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
+        Assert.assertEquals(vEcritureComptable.getTotalDebit(), BigDecimal.valueOf(200.50+100.50+40).setScale(2, BigDecimal.ROUND_HALF_UP));
+    }
+
+    @Test
+    public void checkGetTotalCredit_isEqualTo_SumOfCredits() {
+
+        vEcritureComptable = new EcritureComptable();
+
+        vEcritureComptable.setLibelle("test getTotalCredit");
+        vEcritureComptable.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
+        vEcritureComptable.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
+        vEcritureComptable.getListLigneEcriture().add(this.createLigne(2, null, "301"));
+        vEcritureComptable.getListLigneEcriture().add(this.createLigne(2, "40", "7.2"));
+        Assert.assertEquals(vEcritureComptable.getTotalCredit(), BigDecimal.valueOf(33+301+7.2).setScale(2, BigDecimal.ROUND_HALF_UP));
+    }
+
+
+
+    @Test
+    public void checkMontantLigneEcritureSignesRG4(){
         vEcritureComptable.getListLigneEcriture().clear();
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(-543.21),
