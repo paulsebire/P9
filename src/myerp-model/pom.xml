@@ -66,6 +66,11 @@
             <artifactId>hibernate-validator</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.dummy.myerp</groupId>
+            <artifactId>myerp-consumer</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 

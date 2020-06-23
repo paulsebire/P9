@@ -24,12 +24,10 @@ public class LigneEcritureComptable {
 
     /** The Debit. */
     @MontantComptable
-    @Digits(integer = 10000,fraction = 2)
     private BigDecimal debit;
 
     /** The Credit. */
     @MontantComptable
-    @Digits(integer = 10000,fraction = 2)
     private BigDecimal credit;
 
 

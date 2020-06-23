@@ -108,4 +108,25 @@ public class EcritureComptableTest {
 
     }
 
+
+    @Test
+    public void checkContraintOnReference(){
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        JournalComptable journalComptable = new JournalComptable();
+        pEcritureComptable.setReference("AC-2016/0001");
+        pEcritureComptable.setLibelle("Achat");
+        pEcritureComptable.setId(2);
+        Date date = new Date();
+        pEcritureComptable.setDate(new Date());
+        pEcritureComptable.setJournal(journalComptable);
+        Assert.assertEquals(pEcritureComptable.getJournal(),journalComptable);
+        Assert.assertNotEquals(pEcritureComptable.getReference(),"RC");
+        Assert.assertEquals(pEcritureComptable.getReference(),"AC-2016/0001");
+        Assert.assertNotEquals(pEcritureComptable.getLibelle(),"Other");
+        Assert.assertEquals(pEcritureComptable.getLibelle(),"Achat");
+        Assert.assertEquals(pEcritureComptable.getDate(),date);
+        Assert.assertNotEquals(pEcritureComptable.getId().intValue(), 1);
+        Assert.assertEquals(pEcritureComptable.getId().intValue(),2);
+    }
+
 }
