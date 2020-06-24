@@ -103,36 +103,7 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableViolations(vEcritureComptable);
     }
 
- /*   @Test (expected = NotFoundException.class)
-    public void checkEcritureComptableContext_withFreeReference() throws FunctionalException{
-        EcritureComptable vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setReference("AC-2020/00221");
-        vEcritureComptable.setLibelle("masques");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null,
-                new BigDecimal(123)));
-        manager.checkEcritureComptableContext(vEcritureComptable);
-    }
-    @Test (expected = FunctionalException.class)
-    public void checkEcritureComptableContext_withUsedReference() throws FunctionalException{
-        EcritureComptable vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setReference("AC-2016/00001");
-        vEcritureComptable.setLibelle("masques");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null,
-                new BigDecimal(123)));
-        manager.checkEcritureComptableContext(vEcritureComptable);
-    }*/
+
 
 
 
