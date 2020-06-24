@@ -79,7 +79,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     /**
      * {@inheritDoc}
      */
-    // TODO à tester
     @Override
     public void checkEcritureComptable(EcritureComptable pEcritureComptable) throws FunctionalException {
         this.checkEcritureComptableUnit(pEcritureComptable);
@@ -185,6 +184,68 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
     // TODO ===== RG_Compta_5 : Format et contenu de la référence
     // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
+    public void checkFormatEtContenuOfReferenceOfEcritureCompatble(EcritureComptable ecritureComptable)
+            throws FunctionalException{
+
+        char c;
+        for (int i=0;i<ecritureComptable.getReference().length();i++){
+            c=ecritureComptable.getReference().charAt(i);
+           switch (i){
+                case 0:
+                case 1:if (!Character.isLetter(c)){
+                    throw new FunctionalException(
+                            "La reference ne correspond pas au format: XX-AAAA/#####.");
+                    }
+                break;
+               case 2:if (c!='-'){
+                   throw new FunctionalException(
+                           "La reference ne correspond pas au format: XX-AAAA/#####.");
+                    }
+                   break;
+               case 3:
+               case 4:
+               case 5:
+               case 6:
+               case 8:
+               case 9:
+               case 10:
+               case 11:
+               case 12:if (!Character.isDigit(c)){
+                   throw new FunctionalException(
+                           "La reference ne correspond pas au format: XX-AAAA/#####.");
+               }
+                   break;
+               case 7:if (c!='/'){
+                   throw new FunctionalException(
+                           "La reference ne correspond pas au format: XX-AAAA/#####.");
+               }
+                   break;
+
+
+            }
+        }
+
+        String codeJournal = ecritureComptable.getJournal().getCode();
+        String codeJournalReference = ecritureComptable.getReference().substring(0,2);
+
+        if (!codeJournal.equals(codeJournalReference)){
+            throw new FunctionalException(
+                    "Les codes du journal comptable et de la reference ne sont pas identiques");
+        }
+
+        String dateReference = ecritureComptable.getReference().substring(3,7);
+        String dateEcritureComptable = ecritureComptable.getDate().toString();
+        dateEcritureComptable=dateEcritureComptable.
+                substring(dateEcritureComptable.length()-4);
+
+        if (!dateReference.equals(dateEcritureComptable)){
+            throw new FunctionalException(
+                    "Les dates de l'ecriture comptable et de la reference ne sont pas identiques");
+        }
+
+
+
+    }
 
     /**
      * {@inheritDoc}
