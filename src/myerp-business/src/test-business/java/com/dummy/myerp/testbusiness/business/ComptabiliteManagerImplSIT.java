@@ -3,29 +3,26 @@ package com.dummy.myerp.testbusiness.business;
 import com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.FunctionalException;
+
 import org.junit.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.rules.ExpectedException;
-
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+
 import java.util.Date;
 import java.util.List;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/com/dummy/myerp/testbusiness/business/resources/bootstrapContext.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ExtendWith(MockitoExtension.class)
@@ -36,9 +33,6 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
     private EcritureComptable vEcritureComptable;
     private JournalComptable journalComptable;
 
-
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void comptabiliteManagerImplSIT_Init(){
@@ -152,20 +146,40 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
     }
 
 
-    @ParameterizedTest(expected = FunctionalException.class)
+   /* @Parameterized.Parameter(0)
+    public String ref;
+    @Parameterized.Parameter(1)
+    public Class<? extends Exception> expectedException;
+
+    @Parameterized.Parameters
+    public static Iterable<Object[]> data() {
+        return Arrays.asList(new Object[][] {{ "1C-2016/00001", FunctionalException.class }, { "A2-2016/00001", FunctionalException.class} });
+
+    }
+*/
+
+
+    @ParameterizedTest
     @ValueSource(strings = {"1C-2016/00001","A2-2016/00001","AC/2016/00001","AC-A016/00001","AC-2B16/00001","AC-20C6/00001","AC-201D/00001","AC-2016-00001","AC-2016/A0001","AC-2016/0B001","AC-2016/00C01","AC-2016/000D1","AC-2016/0000E" })
-    public void test8_checkFormatEtContenuOfReferenceOfEcritureCompatble_withErrorsInReference_expectFunctionalException(String args) throws FunctionalException{
-        manager = new ComptabiliteManagerImpl();
-        vEcritureComptable = new EcritureComptable();
-        journalComptable = new JournalComptable("AC", "Achat");
-        vEcritureComptable.setJournal(journalComptable);
-        vEcritureComptable.setDate(new Date());
+    public void test9_checkFormatEtContenuOfReferenceOfEcritureCompatble_withErrorsInReference_expectFunctionalException(String args) throws FunctionalException{
+        ComptabiliteManagerImpl manag = new ComptabiliteManagerImpl();
+         EcritureComptable ecritureComptable = new EcritureComptable();
+        ecritureComptable.setId(1);
+        ecritureComptable.setLibelle("test_RG6");
+        ecritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
+        ecritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
 
-        vEcritureComptable.setReference(args);
+        ecritureComptable.setReference(args);
 
-        manager.checkFormatEtContenuOfReferenceOfEcritureCompatble(vEcritureComptable);
+        System.out.println(ecritureComptable.getReference());
+        System.out.println(ecritureComptable.toString());
 
-        exceptionRule.expect(FunctionalException.class);
+        Assertions.assertThrows(FunctionalException.class, () -> {
+                    manag.checkFormatEtContenuOfReferenceOfEcritureCompatble(ecritureComptable);
+                });
+
+
+
     }
 
 }
