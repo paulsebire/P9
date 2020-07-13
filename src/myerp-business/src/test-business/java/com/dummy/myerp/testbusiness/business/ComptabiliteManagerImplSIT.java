@@ -144,19 +144,7 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
         vEcritureComptable.setDate(date);
         manager.checkFormatEtContenuOfReferenceOfEcritureCompatble(vEcritureComptable);
     }
-
-
-   /* @Parameterized.Parameter(0)
-    public String ref;
-    @Parameterized.Parameter(1)
-    public Class<? extends Exception> expectedException;
-
-    @Parameterized.Parameters
-    public static Iterable<Object[]> data() {
-        return Arrays.asList(new Object[][] {{ "1C-2016/00001", FunctionalException.class }, { "A2-2016/00001", FunctionalException.class} });
-
-    }
-*/
+    
 
 
     @ParameterizedTest
@@ -177,9 +165,25 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
         Assertions.assertThrows(FunctionalException.class, () -> {
                     manag.checkFormatEtContenuOfReferenceOfEcritureCompatble(ecritureComptable);
                 });
+    }
 
 
+    @Test
+    public void test10_AddReference() throws FunctionalException{
+        manager = new ComptabiliteManagerImpl();
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setLibelle("libelle addReference");
+        vEcritureComptable.setDate(new Date());
+        journalComptable = (new JournalComptable("BQ","Banque"));
+        vEcritureComptable.setJournal(journalComptable);
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),null, new BigDecimal(123),null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(706),null, null,new BigDecimal(123)));
+        manager.addReference(vEcritureComptable);
+        manager.insertEcritureComptable(vEcritureComptable);
+        Assert.assertEquals(vEcritureComptable.getReference(),"BQ-2020/00001");
+        manager.deleteEcritureComptable(vEcritureComptable.getId());
 
     }
+
 
 }

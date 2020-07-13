@@ -1,20 +1,19 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import com.dummy.myerp.model.bean.comptabilite.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.TransactionStatus;
 import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
 import com.dummy.myerp.business.impl.AbstractBusinessManager;
-import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
@@ -55,13 +54,30 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
     }
 
+
+    @Override
+    public SequenceEcritureComptable getSequenceEcritureComptable(String pJournal, Integer pAnnee) {
+        return getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(pJournal, pAnnee);
+    }
+
+
+    @Override
+    public void updateSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable){
+        getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(sequenceEcritureComptable);
+    }
+
+    @Override
+    public void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable){
+        getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(sequenceEcritureComptable);
+    }
+
     /**
      * {@inheritDoc}
      */
     // TODO à tester
     @Override
     public synchronized void addReference(EcritureComptable pEcritureComptable) {
-        // TODO à implémenter
+
         // Bien se réferer à la JavaDoc de cette méthode !
         /* Le principe :
                 1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
@@ -74,8 +90,35 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(pEcritureComptable.getDate());
+        Integer annee = calendar.get(Calendar.YEAR);
+
+        SequenceEcritureComptable vSequenceEcritureComptable = getSequenceEcritureComptable(pEcritureComptable.getJournal().getCode(),annee);
+
+        if (vSequenceEcritureComptable != null){
+            vSequenceEcritureComptable.setDerniereValeur(vSequenceEcritureComptable.getDerniereValeur()+1);
+            updateSequenceEcritureComptable(vSequenceEcritureComptable);
+        }
+        else
+        {
+            vSequenceEcritureComptable = new SequenceEcritureComptable(annee,1);
+            vSequenceEcritureComptable.setJournalComptable(pEcritureComptable.getJournal());
+            insertSequenceEcritureComptable(vSequenceEcritureComptable);
+        }
+
+        /* 3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)*/
+        pEcritureComptable.setReference(reference(vSequenceEcritureComptable));
+
     }
 
+
+    public String reference(SequenceEcritureComptable sequenceEcritureComptable){
+        String reference = sequenceEcritureComptable.getJournalComptable().getCode() + "-"
+                + sequenceEcritureComptable.getAnnee() + "/"
+                + String.format("%05d", sequenceEcritureComptable.getDerniereValeur() );
+        return  reference;
+    }
     /**
      * {@inheritDoc}
      */
@@ -93,7 +136,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * @param pEcritureComptable -
      * @throws FunctionalException Si l'Ecriture comptable ne respecte pas les règles de gestion
      */
-    // TODO tests à compléter
+    // TODO tests à compléter==> a checker
     protected void checkEcritureComptableUnit(EcritureComptable pEcritureComptable) throws FunctionalException {
         // ===== Vérification des contraintes unitaires sur les attributs de l'écriture
         checkEcritureComptableViolations(pEcritureComptable);
@@ -182,7 +225,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         }else return true;
     }
 
-    // TODO ===== RG_Compta_5 : Format et contenu de la référence
     // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
     public void checkFormatEtContenuOfReferenceOfEcritureCompatble(EcritureComptable ecritureComptable)
             throws FunctionalException{
