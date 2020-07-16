@@ -91,4 +91,8 @@ public interface ComptabiliteManager {
     void updateSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
 
     void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
+
+    public List<SequenceEcritureComptable> getListSequenceEcritureComptable();
+
+    void deleteSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
 }

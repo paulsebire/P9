@@ -4,6 +4,8 @@ import com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.FunctionalException;
 
+import static com.dummy.myerp.consumer.ConsumerHelper.getDaoProxy;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +15,7 @@ import org.junit.runners.MethodSorters;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.TransactionStatus;
 
 
 import java.math.BigDecimal;
@@ -20,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -184,6 +188,40 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
         manager.deleteEcritureComptable(vEcritureComptable.getId());
 
     }
+
+    @Test
+    public void test11_checkUpdateSequenceComptable() throws FunctionalException{
+        SequenceEcritureComptable vSequenceEcritureComptable = manager.getSequenceEcritureComptable("AC",2016);
+        vSequenceEcritureComptable.setDerniereValeur(vSequenceEcritureComptable.getDerniereValeur()+1);
+        manager.updateSequenceEcritureComptable(vSequenceEcritureComptable);
+        assertThat(manager.getSequenceEcritureComptable(vSequenceEcritureComptable.getJournalComptable().getCode(),vSequenceEcritureComptable.getAnnee()).getDerniereValeur()).isEqualTo(41);
+        vSequenceEcritureComptable.setDerniereValeur(vSequenceEcritureComptable.getDerniereValeur()-1);
+        manager.updateSequenceEcritureComptable(vSequenceEcritureComptable);
+
+    }
+    @Test
+    public void test11_checkUpdateSequenceComptable_withNewSequence() throws FunctionalException{
+        SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable(2020,0);
+        sequenceEcritureComptable.setJournalComptable(journalComptable);
+        manager.insertSequenceEcritureComptable(sequenceEcritureComptable);
+        sequenceEcritureComptable.setDerniereValeur(sequenceEcritureComptable.getDerniereValeur()+1);
+        manager.updateSequenceEcritureComptable(sequenceEcritureComptable);
+        assertThat(manager.getSequenceEcritureComptable(sequenceEcritureComptable.getJournalComptable().getCode(),sequenceEcritureComptable.getAnnee()).getDerniereValeur()).isEqualTo(1);
+        manager.deleteSequenceEcritureComptable(sequenceEcritureComptable);
+
+    }
+
+    @Test
+    public  void test12_checkInsertAndDeleteSequenceEcritureComptable() throws FunctionalException{
+        SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable(2020,0);
+        sequenceEcritureComptable.setJournalComptable(journalComptable);
+        int sizeList = manager.getListSequenceEcritureComptable().size();
+        manager.insertSequenceEcritureComptable(sequenceEcritureComptable);
+        assertThat(manager.getListSequenceEcritureComptable().size()).isEqualTo(sizeList+1);
+        manager.deleteSequenceEcritureComptable(sequenceEcritureComptable);
+        assertThat(manager.getListSequenceEcritureComptable().size()).isEqualTo(sizeList);
+    }
+
 
 
 }

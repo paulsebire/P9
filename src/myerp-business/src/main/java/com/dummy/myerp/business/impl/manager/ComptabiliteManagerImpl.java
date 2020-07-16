@@ -17,6 +17,8 @@ import com.dummy.myerp.business.impl.AbstractBusinessManager;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
+import static com.dummy.myerp.consumer.ConsumerHelper.getDaoProxy;
+
 
 /**
  * Comptabilite manager implementation.
@@ -54,6 +56,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
     }
 
+
+    @Override
+    public List<SequenceEcritureComptable> getListSequenceEcritureComptable() {
+        return getDaoProxy().getComptabiliteDao().getListSequenceEcritureComptable();
+    }
 
     @Override
     public SequenceEcritureComptable getSequenceEcritureComptable(String pJournal, Integer pAnnee) {
@@ -328,6 +335,17 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
         try {
             getDaoProxy().getComptabiliteDao().deleteEcritureComptable(pId);
+            getTransactionManager().commitMyERP(vTS);
+            vTS = null;
+        } finally {
+            getTransactionManager().rollbackMyERP(vTS);
+        }
+    }
+    @Override
+    public void deleteSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable) {
+        TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
+        try {
+            getDaoProxy().getComptabiliteDao().deleteSequenceEcritureComptable(sequenceEcritureComptable);
             getTransactionManager().commitMyERP(vTS);
             vTS = null;
         } finally {

@@ -102,7 +102,26 @@
                 WHERE journal_code =:journal_code AND annee =:annee
             </value>
         </property>
-
+        <property name="SQLloadListSequenceEcritureComptable">
+            <value>
+                SELECT * FROM myerp.sequence_ecriture_comptable
+            </value>
+        </property>
+        <property name="SQLdeleteSequenceEcritureComptable">
+            <value>
+                DELETE FROM myerp.sequence_ecriture_comptable
+                WHERE journal_code = :journal_code AND annee = :annee
+            </value>
+        </property>
+        <property name="SQLinsertSequenceEcritureComptable">
+            <value>
+                INSERT INTO myerp.sequence_ecriture_comptable (
+                 journal_code,annee, derniere_valeur
+                ) VALUES (
+                :journal_code,:annee,:derniere_valeur
+                )
+            </value>
+        </property>
     </bean>
 
 </beans>
