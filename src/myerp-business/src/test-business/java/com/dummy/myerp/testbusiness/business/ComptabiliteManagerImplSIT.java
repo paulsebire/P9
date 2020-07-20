@@ -119,6 +119,7 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
         manager.checkEcritureComptable(vEcritureComptable);
+        manager.deleteEcritureComptable(vEcritureComptable.getId());
 
     }
 
