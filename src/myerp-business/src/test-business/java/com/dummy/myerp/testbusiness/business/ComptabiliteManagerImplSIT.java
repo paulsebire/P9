@@ -73,6 +73,7 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
         manager.insertEcritureComptable(vEcritureComptable);
         Assert.assertEquals(manager.getListEcritureComptable().size(),tailleDeLalisteAvantInsert + 1);
         Assert.assertEquals(vEcritureComptable.getReference(),"AC-2020/00001");
+        manager.deleteEcritureComptable(vEcritureComptable.getId());
 
     }
 
@@ -113,13 +114,12 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
 
     @Test
     public void test6_checkEcitureComptable() throws FunctionalException{
-
-        vEcritureComptable.setReference("AC-2020/00001");
+        vEcritureComptable.setReference("TE-2020/00001");
         vEcritureComptable.setLibelle("Test_Insert");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
         manager.checkEcritureComptable(vEcritureComptable);
-        manager.deleteEcritureComptable(vEcritureComptable.getId());
+
 
     }
 
@@ -175,6 +175,7 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
 
     @Test
     public void test10_AddReference() throws FunctionalException{
+
         manager = new ComptabiliteManagerImpl();
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setLibelle("libelle addReference");
@@ -184,9 +185,8 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),null, new BigDecimal(123),null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(706),null, null,new BigDecimal(123)));
         manager.addReference(vEcritureComptable);
-        manager.insertEcritureComptable(vEcritureComptable);
         Assert.assertEquals(vEcritureComptable.getReference(),"BQ-2020/00001");
-        manager.deleteEcritureComptable(vEcritureComptable.getId());
+        manager.deleteSequenceEcritureComptable(manager.getSequenceEcritureComptable("BQ",2020));
 
     }
 
