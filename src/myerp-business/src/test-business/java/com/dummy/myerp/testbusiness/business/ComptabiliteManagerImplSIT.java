@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-@ContextConfiguration(locations = {"classpath:/com/dummy/myerp/testbusiness/business/resources/bootstrapContext.xml"})
+@ContextConfiguration(locations = {"classpath:bootstrapContext.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ExtendWith(MockitoExtension.class)
 public class ComptabiliteManagerImplSIT extends BusinessTestCase {
@@ -89,9 +89,13 @@ public class ComptabiliteManagerImplSIT extends BusinessTestCase {
     }
 
     @Test
-    public void test4_DeleteEcritureComptable(){
-
-        EcritureComptable ecritureComptable= manager.getListEcritureComptable().get(5);
+    public void test4_DeleteEcritureComptable() throws FunctionalException{
+        vEcritureComptable.setReference("AC-2020/00001");
+        vEcritureComptable.setLibelle("Test_Insert");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
+        manager.insertEcritureComptable(vEcritureComptable);
+        EcritureComptable ecritureComptable= manager.getListEcritureComptable().get(manager.getListEcritureComptable().size()-1);
         int sizeOfList = manager.getListEcritureComptable().size();
         manager.deleteEcritureComptable(ecritureComptable.getId());
         Assert.assertEquals(sizeOfList,manager.getListEcritureComptable().size()+1);
