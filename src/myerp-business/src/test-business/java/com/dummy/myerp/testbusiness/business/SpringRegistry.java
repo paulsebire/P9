@@ -23,10 +23,12 @@ public final class SpringRegistry {
 
     /** Nom des fichiers de contexte de l'application */
     private static final String CONTEXT_APPLI_LOCATION
-        = "classpath:/com/dummy/myerp/testbusiness/business/resources/bootstrapContext.xml";
+        = "classpath:bootstrapContext.xml";
 
     /** Le context spring de l'application */
     private ApplicationContext contextAppli;
+
+
 
 
     // ==================== ID des Beans Spring ====================
