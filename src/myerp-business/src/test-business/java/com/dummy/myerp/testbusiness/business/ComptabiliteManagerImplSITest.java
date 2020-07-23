@@ -30,7 +30,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:bootstrapContext.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ExtendWith(MockitoExtension.class)
-public class ComptabiliteManagerImplSIT extends BusinessTestCase {
+public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
     @Mock
     private ComptabiliteManagerImpl manager;
