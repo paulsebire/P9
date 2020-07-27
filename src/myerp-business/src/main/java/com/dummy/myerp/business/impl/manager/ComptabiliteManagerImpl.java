@@ -235,44 +235,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     public void checkFormatEtContenuOfReferenceOfEcritureCompatble(EcritureComptable ecritureComptable)
             throws FunctionalException{
 
-        char c;
-        for (int i=0;i<ecritureComptable.getReference().length();i++){
-            c=ecritureComptable.getReference().charAt(i);
-           switch (i){
-                case 0:
-                case 1:if (!Character.isLetter(c)){
-                    throw new FunctionalException(
-                            "La reference ne correspond pas au format: XX-AAAA/#####.");
-                    }
-                break;
-               case 2:if (c!='-'){
-                   throw new FunctionalException(
-                           "La reference ne correspond pas au format: XX-AAAA/#####.");
-                    }
-                   break;
-               case 3:
-               case 4:
-               case 5:
-               case 6:
-               case 8:
-               case 9:
-               case 10:
-               case 11:
-               case 12:if (!Character.isDigit(c)){
-                   throw new FunctionalException(
-                           "La reference ne correspond pas au format: XX-AAAA/#####.");
-               }
-                   break;
-               case 7:if (c!='/'){
-                   throw new FunctionalException(
-                           "La reference ne correspond pas au format: XX-AAAA/#####.");
-               }
-                   break;
-
-
-            }
-        }
-
         String codeJournal = ecritureComptable.getJournal().getCode();
         String codeJournalReference = ecritureComptable.getReference().substring(0,2);
 
