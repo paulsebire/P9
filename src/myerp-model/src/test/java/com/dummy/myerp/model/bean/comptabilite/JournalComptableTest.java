@@ -11,7 +11,9 @@ import java.util.List;
 
 public class JournalComptableTest {
 
-
+    /**
+     * test on method getByCode
+     */
     @Test
    public void checkMethodGetByCode(){
         JournalComptable journalComptable=new JournalComptable();
@@ -22,6 +24,10 @@ public class JournalComptableTest {
         Assert.assertEquals(JournalComptable.getByCode(journalComptableList,"AC").getLibelle(),"Achat");
         Assert.assertEquals(JournalComptable.getByCode(journalComptableList,"AC").getCode(),"AC");
     }
+
+    /**
+     * test on method getByCode, expect null JournalComptable
+     */
     @Test
     public void checkMethodGetByCode_withNullReturn(){
         JournalComptable journalComptable=new JournalComptable();
@@ -32,6 +38,9 @@ public class JournalComptableTest {
         Assert.assertEquals(JournalComptable.getByCode(journalComptableList,"VE"),null);
     }
 
+    /**
+     * Unnecessary test, fulfill the report coverage, not very usefull
+     */
     @Test
     public void chekToStringMethod(){
         JournalComptable journalComptable=new JournalComptable("AC","Achat");

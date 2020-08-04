@@ -18,7 +18,9 @@ public class ComptabiliteManagerImplTest {
 
     private EcritureComptable vEcritureComptable;
 
-
+    /**
+     * before each test initialize the variables
+     */
     @Before
     public void initCompatibiliteManagerImpl(){
         vEcritureComptable = new EcritureComptable();
@@ -32,22 +34,37 @@ public class ComptabiliteManagerImplTest {
                 null, null,
                 new BigDecimal(123)));
     }
+
+    /**
+     * After each test reset the variable vEcritureComptable
+     */
     @After
     public void ResetvEcritureComptable(){
         vEcritureComptable=new EcritureComptable();
     }
 
+    /**
+     * test of violations, number of line and balanced ecritureComptable
+     * @throws Exception
+     */
     @Test
     public void checkEcritureComptableUnit() throws Exception {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
+    /**
+     * test on violations of constraints of EcritureComptable
+     * @throws Exception
+     */
     @Test
     public void checkInitCompatibiliteManagerImplViolations() throws Exception {
         manager.checkEcritureComptableViolations(vEcritureComptable);
     }
 
-
+    /**
+     * EcritureComptable not balanced expect exception
+     * @throws Exception
+     */
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG2() throws Exception {
         EcritureComptable vEcritureComptable;
@@ -64,6 +81,10 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableEquilibree(vEcritureComptable);
     }
 
+    /**
+     * test on EcritureComptable with no debit, expect exception
+     * @throws Exception
+     */
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG3() throws Exception {
         EcritureComptable vEcritureComptable;
@@ -81,7 +102,10 @@ public class ComptabiliteManagerImplTest {
     }
 
 
-
+    /**
+     *test on number size RG7
+     * @throws Exception
+     */
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG7() throws Exception {
 

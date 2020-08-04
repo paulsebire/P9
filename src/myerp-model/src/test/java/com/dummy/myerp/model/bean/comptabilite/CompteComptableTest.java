@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class CompteComptableTest {
-
+    /**
+     * test on method GetByNumero
+     */
     @Test
     public void checkMethodGetByNumero(){
         CompteComptable compteComptable=new CompteComptable();
@@ -21,6 +23,10 @@ public class CompteComptableTest {
                 .getByNumero(compteComptables, 1).getNumero().intValue(), 1);
 
     }
+
+    /**
+     * test on method GetByNumero, in a list of 1 get number 2, expect null CompteComptable
+     */
     @Test
     public void checkMethodGetByNumero_withNullReturn(){
         CompteComptable compteComptable=new CompteComptable();
@@ -33,6 +39,9 @@ public class CompteComptableTest {
 
     }
 
+    /**
+     * Unnecessary test, fulfill the report coverage, not very usefull
+     */
     @Test
     public void chekToStringMethod(){
         CompteComptable compteComptable=new CompteComptable(1,"1er compte");

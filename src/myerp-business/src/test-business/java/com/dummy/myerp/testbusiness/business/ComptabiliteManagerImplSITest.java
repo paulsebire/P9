@@ -37,7 +37,9 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
     private EcritureComptable vEcritureComptable;
     private JournalComptable journalComptable;
 
-
+    /**
+     * Before each test initialize the variables
+     */
     @Before
     public void comptabiliteManagerImplSIT_Init(){
         manager = new ComptabiliteManagerImpl();
@@ -47,13 +49,19 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
         vEcritureComptable.setDate(new Date());
     }
 
-
+    /**
+     * after each test reset the variables
+     */
     @After
     public void ResetvEcritureComptable(){
         journalComptable = new JournalComptable();
         vEcritureComptable=new EcritureComptable();
     }
 
+    /**
+     * test on DB connection
+     * @throws FunctionalException
+     */
     @Test
     public void test1_ConnectioToDB() throws FunctionalException {
 
@@ -62,6 +70,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
     }
 
+    /**
+     * test on method InsertEcritureComptable, with a free reference
+     * @throws FunctionalException
+     */
     @Test
     public void test2_InsertEcrtirueComptable_withFreeReference() throws FunctionalException {
 
@@ -77,6 +89,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
     }
 
+    /**
+     * test on method InsertEcritureComptable, with an used reference, expect exception
+     * @throws FunctionalException
+     */
     @Test(expected = FunctionalException.class)
     public void test3_InsertEcrtirueComptable_withUsedReference() throws FunctionalException {
 
@@ -88,6 +104,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
         manager.insertEcritureComptable(vEcritureComptable);
     }
 
+    /**
+     * test on method DeleteEcritureComptable
+     * @throws FunctionalException
+     */
     @Test
     public void test4_DeleteEcritureComptable() throws FunctionalException{
         vEcritureComptable.setReference("AC-2020/00001");
@@ -102,6 +122,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
     }
 
+    /**
+     * test on mehod UpdateEcritureComptable
+     * @throws FunctionalException
+     */
     @Test
     public void test5_UpdateEcritureComptable() throws FunctionalException{
 
@@ -116,6 +140,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
     }
 
+    /**
+     * test on method checkEcritureComptable
+     * @throws FunctionalException
+     */
     @Test
     public void test6_checkEcitureComptable() throws FunctionalException{
         vEcritureComptable.setReference("TE-2020/00001");
@@ -126,7 +154,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
 
     }
-
+    /**
+     * test on method checkEcritureComptable, expect exception
+     * @throws FunctionalException
+     */
     @Test(expected = FunctionalException.class)
     public void test7_checkEcitureComptable_withUsedReference() throws FunctionalException{
 
@@ -138,6 +169,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
     }
 
+    /**
+     * test on format and composition of reference
+     * @throws FunctionalException
+     */
     @Test
     public void test8_checkFormatEtContenuOfReferenceOfEcritureCompatble() throws FunctionalException{
         vEcritureComptable.setReference("AC-2016/00001");
@@ -153,9 +188,13 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
         vEcritureComptable.setDate(date);
         manager.checkFormatEtContenuOfReferenceOfEcritureCompatble(vEcritureComptable);
     }
-    
 
 
+    /**
+     * test on several bad references, expect exception in each case
+     * @param args
+     * @throws FunctionalException
+     */
     @ParameterizedTest
     @ValueSource(strings = {"1C-2016/00001","A2-2016/00001","AC/2016/00001","AC-A016/00001","AC-2B16/00001","AC-20C6/00001","AC-201D/00001","AC-2016-00001","AC-2016/A0001","AC-2016/0B001","AC-2016/00C01","AC-2016/000D1","AC-2016/0000E" })
     public void test9_checkFormatEtContenuOfReferenceOfEcritureCompatble_withErrorsInReference_expectFunctionalException(String args) throws FunctionalException{
@@ -176,7 +215,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
                 });
     }
 
-
+    /**
+     * test on method addReference
+     * @throws FunctionalException
+     */
     @Test
     public void test10_AddReference() throws FunctionalException{
 
@@ -194,6 +236,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
     }
 
+    /**
+     * test on method UpdateSequenceEcritureComptable, with an existing reference
+     * @throws FunctionalException
+     */
     @Test
     public void test11_checkUpdateSequenceComptable() throws FunctionalException{
         SequenceEcritureComptable vSequenceEcritureComptable = manager.getSequenceEcritureComptable("AC",2016);
@@ -204,6 +250,11 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
         manager.updateSequenceEcritureComptable(vSequenceEcritureComptable);
 
     }
+
+    /**
+     * test on method UpdateSequenceEcritureComptable, with a new reference
+     * @throws FunctionalException
+     */
     @Test
     public void test11_checkUpdateSequenceComptable_withNewSequence() throws FunctionalException{
         SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable(2020,0);
@@ -216,6 +267,10 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
     }
 
+    /**
+     * test on Insert and Delete SequenceEcritureComptable
+     * @throws FunctionalException
+     */
     @Test
     public  void test12_checkInsertAndDeleteSequenceEcritureComptable() throws FunctionalException{
         SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable(2020,0);

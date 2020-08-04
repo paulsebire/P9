@@ -11,7 +11,13 @@ import org.junit.Test;
 
 
 public class EcritureComptableTest {
-
+    /**
+     * method to create ligneEcritureComptable
+     * @param pCompteComptableNumero
+     * @param pDebit
+     * @param pCredit
+     * @return
+     */
     private LigneEcritureComptable createLigne(Integer pCompteComptableNumero, String pDebit, String pCredit) {
         BigDecimal vDebit = pDebit == null ? null : new BigDecimal(pDebit);
         BigDecimal vCredit = pCredit == null ? null : new BigDecimal(pCredit);
@@ -25,7 +31,9 @@ public class EcritureComptableTest {
 
     private EcritureComptable vEcritureComptable;
 
-
+    /**
+     * before each test initialize the varible
+     */
     @Before
     public void initCompatibiliteManagerImpl(){
         vEcritureComptable = new EcritureComptable();
@@ -40,6 +48,9 @@ public class EcritureComptableTest {
                 new BigDecimal(123)));
     }
 
+    /**
+     * test on RG2, balanced LigneEcriture
+     */
     @Test
     public void isEquilibreeRG2() {
         EcritureComptable vEcriture;
@@ -52,6 +63,10 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
         Assert.assertTrue(vEcriture.toString(), vEcriture.isEquilibree());
     }
+
+    /**
+     * test on RG2, unbalanced LigneEcriture
+     */
     @Test
     public void isNotEquilibreeRG2() {
         EcritureComptable vEcriture;
@@ -65,6 +80,9 @@ public class EcritureComptableTest {
         Assert.assertFalse(vEcriture.toString(), vEcriture.isEquilibree());
     }
 
+    /**
+     * test on method getTotalDebit
+     */
     @Test
     public void checkGetTotalDebit_isEqualTo_SumOfDebits() {
         vEcritureComptable = new EcritureComptable();
@@ -77,6 +95,9 @@ public class EcritureComptableTest {
         Assert.assertEquals(vEcritureComptable.getTotalDebit(), BigDecimal.valueOf(200.50+100.50+40).setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 
+    /**
+     * test on method getTotalCredit
+     */
     @Test
     public void checkGetTotalCredit_isEqualTo_SumOfCredits() {
 
@@ -91,7 +112,9 @@ public class EcritureComptableTest {
     }
 
 
-
+    /**
+     * test on sign of values of EcritureComptable
+     */
     @Test
     public void checkMontantLigneEcritureSignesRG4(){
         vEcritureComptable.getListLigneEcriture().clear();
@@ -108,7 +131,9 @@ public class EcritureComptableTest {
 
     }
 
-
+    /**
+     * test on constraint on EcritureComptable
+     */
     @Test
     public void checkContraintOnReference(){
         EcritureComptable pEcritureComptable = new EcritureComptable();
