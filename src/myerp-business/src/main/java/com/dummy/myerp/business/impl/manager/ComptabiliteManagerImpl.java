@@ -225,7 +225,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
     public void checkFormatEtContenuOfReferenceOfEcritureCompatble(EcritureComptable ecritureComptable)
             throws FunctionalException{
-
         String codeJournal = ecritureComptable.getJournal().getCode();
         String codeJournalReference = ecritureComptable.getReference().substring(0,2);
 

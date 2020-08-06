@@ -151,8 +151,6 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
         manager.checkEcritureComptable(vEcritureComptable);
-
-
     }
     /**
      * test on method checkEcritureComptable, expect exception
@@ -200,6 +198,9 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
     public void test9_checkFormatEtContenuOfReferenceOfEcritureCompatble_withErrorsInReference_expectFunctionalException(String args) throws FunctionalException{
         ComptabiliteManagerImpl manag = new ComptabiliteManagerImpl();
          EcritureComptable ecritureComptable = new EcritureComptable();
+         JournalComptable journalComptable = new JournalComptable("AC", "Achat");
+         ecritureComptable.setDate(new Date());
+        ecritureComptable.setJournal(journalComptable);
         ecritureComptable.setId(1);
         ecritureComptable.setLibelle("test_RG6");
         ecritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
@@ -207,8 +208,6 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
         ecritureComptable.setReference(args);
 
-        System.out.println(ecritureComptable.getReference());
-        System.out.println(ecritureComptable.toString());
 
         Assertions.assertThrows(FunctionalException.class, () -> {
                     manag.checkFormatEtContenuOfReferenceOfEcritureCompatble(ecritureComptable);
