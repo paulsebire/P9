@@ -191,7 +191,7 @@ public class ComptabiliteManagerImplSITest extends BusinessTestCase {
 
 
     /**
-     * test on several bad references, expect exception in each case
+     * test on several bad references, expect exception in each case, test
      * @param args
      * @throws FunctionalException
      */
